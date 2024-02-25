@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,14 +16,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 //PRAKTIKUM 1
-Route::get('/hello', function () {
+/*Route::get('/hello', function () {
     return 'Hello World';
 });
 
 //d
 Route::get('/world', function () {
     return 'World';
-});
+});*/
 //f
 Route::get('/selamat datang', function () {
     return 'Selamat Datang';
@@ -61,3 +63,24 @@ Route::get('/user/{name?}', function ($name = 'John') {
 Route::get('/user/profile', function () {
     //
 })->name('profile');
+
+//Controller
+Route::get('/hello', [WelcomeController::class, 'hello']);
+// resource (/)
+Route::get('/', [PageController::class, 'index']);
+// resource (/about)
+Route::get('/about', [PageController::class, 'about']);
+// resource (/articles/{id})
+Route::get('/articles/{id}', function ($id) {
+    return 'Halaman Artikel ke- ' . $id;
+});
+
+use App\Http\Controllers\PhotoController;
+
+Route::resource('photos', PhotoController::class);
+Route::resource('photos', PhotoController::class)->only([
+    'index', 'show'
+]);
+Route::resource('photos', PhotoController::class)->except([
+    'create', 'store', 'update', 'destroy'
+]);
